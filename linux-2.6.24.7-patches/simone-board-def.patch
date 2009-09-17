@@ -1,0 +1,290 @@
+Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Kconfig
+===================================================================
+--- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Kconfig	2009-09-16 19:28:36.000000000 +0100
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/Kconfig	2009-09-16 19:29:58.000000000 +0100
+@@ -82,6 +82,12 @@
+          Say 'Y' here if you want your kernel to support the
+          Contec Hypercontrol Micro9-L board.
+ 
++config MACH_SIM_ONE
++	bool "Support SIM.ONE board "
++	help
++	  Say 'Y' here if you want your kernel to support the
++	  Simplemachines SIM.ONE board.
++
+ config MACH_TS72XX
+ 	bool "Support Technologic Systems TS-72xx SBC"
+ 	help
+Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile
+===================================================================
+--- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Makefile	2009-09-16 19:39:23.000000000 +0100
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile	2009-09-16 19:39:41.000000000 +0100
+@@ -15,4 +15,5 @@
+ obj-$(CONFIG_MACH_EDB9315A)	+= edb9315a.o
+ obj-$(CONFIG_MACH_GESBC9312)	+= gesbc9312.o
+ obj-$(CONFIG_MACH_MICRO9)	+= micro9.o
++obj-$(CONFIG_MACH_SIM_ONE)	+= simone.o
+ obj-$(CONFIG_MACH_TS72XX)	+= ts72xx.o
+Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile.boot
+===================================================================
+--- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Makefile.boot	2009-09-16 19:34:33.000000000 +0100
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile.boot	2009-09-16 19:37:07.000000000 +0100
+@@ -1,2 +1,4 @@
+    zreladdr-y	:= 0x00008000
+ params_phys-y	:= 0x00000100
++   zreladdr-$(CONFIG_MACH_SIM_ONE)	:= 0xc0008000
++params_phys-$(CONFIG_MACH_SIM_ONE)	:= 0xc0000100
+Index: linux-2.6.24.7/arch/arm/mach-ep93xx/simone.c
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/simone.c	2009-09-16 20:11:42.000000000 +0100
+@@ -0,0 +1,211 @@
++/*
++ * arch/arm/mach-ep93xx/simone.c
++ * Simplemachines SIM.ONE support.
++ *
++ * Copyright (C) 2009 Simplemachines
++ * MMC support by Peter Ivanov <ivanovp@gmail.com>, 2007
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or (at
++ * your option) any later version.
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/mm.h>
++#include <linux/sched.h>
++#include <linux/interrupt.h>
++#include <linux/ioport.h>
++#include <linux/mtd/physmap.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/mmc_spi.h>
++#include <linux/mmc/host.h>
++#include <linux/jiffies.h>
++#include <linux/irq.h>
++
++#include <asm/io.h>
++#include <asm/hardware.h>
++#include <asm/mach-types.h>
++#include <asm/mach/arch.h>
++#include <asm/arch/gpio.h>
++
++
++static struct physmap_flash_data simone_flash_data = {
++	.width		= 2,
++};
++
++static struct resource simone_flash_resource = {
++	.start		= 0x60000000,
++	.end		= 0x60000000+ SZ_8M - 1,
++	.flags		= IORESOURCE_MEM,
++};
++
++static struct platform_device simone_flash = {
++	.name		= "physmap-flash",
++	.id		= 0,
++	.dev		= {
++		.platform_data	= &simone_flash_data,
++	},
++	.num_resources	= 1,
++	.resource	= &simone_flash_resource,
++};
++
++
++static struct resource ep93xx_ac97_resources[] = {
++	[0] = {
++                .start          = EP93XX_AC97_PHY_BASE,
++                .end            = EP93XX_AC97_PHY_BASE + 0x6C,
++		.flags	= IORESOURCE_MEM,
++	},
++	[1] = {
++                .start          = NO_IRQ,
++                .end            = NO_IRQ,
++                .flags          = IORESOURCE_IRQ,
++        },
++};
++
++static u64 ep93xx_ac97_dma_mask = 0xffffffffUL;
++
++static struct platform_device ep93xx_ac97_device = {
++        .name           = "ep93xx-ac97",
++        .id             = 0,
++        .num_resources  = 2,
++        .resource       = ep93xx_ac97_resources,
++        .dev = {
++                .dma_mask               = &ep93xx_ac97_dma_mask,
++                .coherent_dma_mask      = 0xffffffffUL,
++        },
++};
++
++
++#ifdef CONFIG_SPI
++static struct resource ep93xx_spi_resources[] = {
++      [0] = {
++              .start  = EP93XX_SPI_BASE_PHYS,
++              .end    = EP93XX_SPI_BASE_PHYS + 0x0fff,
++              .flags  = IORESOURCE_MEM,
++      },
++      [1] = {
++              .start  = IRQ_EP93XX_SSP,
++              .end    = IRQ_EP93XX_SSP,
++              .flags  = IORESOURCE_IRQ,
++      },
++};
++
++static struct platform_device ep93xx_spi_device = {
++      .name           = "ep93xx-spi",
++      .id             = 0,
++      .dev            = {
++              .bus_id         = "apb:spi",
++      },
++      .resource       = ep93xx_spi_resources,
++      .num_resources  = ARRAY_SIZE(ep93xx_spi_resources),
++};
++
++
++#define EP93XX_MMC_SPI_CARD_PRESENT	EP93XX_GPIO_LINE_A(0)
++
++/*
++ * Initializes SPI system to communicate with MMC/SD card
++ */
++int ep93xx_mmc_spi_init (struct device *pdev, irqreturn_t (*card_det_irq_handler)(int, void *),
++		void *mmc)
++{
++	int rv;
++
++	gpio_line_config (EP93XX_MMC_SPI_CARD_PRESENT, GPIO_IN);
++
++	if ((rv = request_irq (IRQ_EP93XX_GPIO( EP93XX_MMC_SPI_CARD_PRESENT),
++					card_det_irq_handler,
++					IRQF_DISABLED | IRQT_FALLING, /* flags */
++					"ep93xx-mmc-spi", 	/* devname */
++					mmc 			/* void *devid */
++			      )) == 0)
++	{
++		dev_info (pdev, "MMC/SD card detection IRQ %i assigned.\n",
++				IRQ_EP93XX_GPIO(EP93XX_MMC_SPI_CARD_PRESENT));
++	}
++	else
++	{
++		dev_err (pdev, "Cannot assign MMC/SD card detection IRQ (%i)!\n",
++				IRQ_EP93XX_GPIO(EP93XX_MMC_SPI_CARD_PRESENT));
++		return rv;
++	}
++	return 0;
++}
++
++void ep93xx_mmc_spi_exit (struct device *pdev, void *mmc)
++{
++	free_irq (EP93XX_MMC_SPI_CARD_PRESENT, mmc);
++}
++
++static struct mmc_spi_platform_data ep93xx_spi_pdata = {
++	.init = &ep93xx_mmc_spi_init,
++	.exit = &ep93xx_mmc_spi_exit,
++	.get_ro = NULL,
++	.detect_delay = 500,			/* card detection delay in msec */
++	.ocr_mask = MMC_VDD_33_34,
++};
++
++static struct spi_board_info ep93xx_spi_board_info[] __initdata = {
++	{
++		.modalias = "mmc_spi",
++		.max_speed_hz = 7.4E6,				/* max spi clock (SCK) speed in HZ */
++		.bus_num = 0,
++		.chip_select = 0,
++		.platform_data = (void*) &ep93xx_spi_pdata,
++		.controller_data = NULL,
++		.mode = SPI_MODE_0,
++	}
++};
++#endif
++static struct ep93xx_eth_data ep93xx_eth_data;
++
++static struct resource ep93xx_eth_resource[] = {
++	{
++		.start	= EP93XX_ETHERNET_PHYS_BASE,
++		.end	= EP93XX_ETHERNET_PHYS_BASE + 0xffff,
++		.flags	= IORESOURCE_MEM,
++	}, {
++		.start	= IRQ_EP93XX_ETHERNET,
++		.end	= IRQ_EP93XX_ETHERNET,
++		.flags	= IORESOURCE_IRQ,
++	}
++};
++
++static struct platform_device ep93xx_eth_device = {
++	.name		= "ep93xx-eth",
++	.id		= -1,
++	.dev		= {
++		.platform_data	= &ep93xx_eth_data,
++	},
++	.num_resources	= ARRAY_SIZE(ep93xx_eth_resource),
++	.resource	= ep93xx_eth_resource,
++};
++
++static void __init simone_init_machine(void)
++{
++	ep93xx_init_devices();
++        /* Switch off the LCD backlight*/
++        gpio_line_config (EP93XX_GPIO_LINE_B(5), GPIO_OUT);
++	platform_device_register(&simone_flash);
++        platform_device_register(&ep93xx_ac97_device);
++	platform_device_register(&ep93xx_eth_device);
++#if defined(CONFIG_SPI_EP93XX) || defined(CONFIG_SPI_EP93XX_MODULE)
++	platform_device_register(&ep93xx_spi_device);
++	spi_register_board_info(ep93xx_spi_board_info,ARRAY_SIZE(ep93xx_spi_board_info));
++#endif
++}
++
++MACHINE_START(SIM_ONE, "Simplemachine SimONE Board")
++	/* Maintainer: Nuccio Raciti Simplemachine <nuccio.raciti@gmail.com>*/
++	.phys_io	= EP93XX_APB_PHYS_BASE,
++	.io_pg_offst	= ((EP93XX_APB_VIRT_BASE) >> 18) & 0xfffc,
++	.boot_params	= 0x00000100,
++	.map_io		= ep93xx_map_io,
++	.init_irq	= ep93xx_init_irq,
++	.timer		= &ep93xx_timer,
++	.init_machine	= simone_init_machine,
++MACHINE_END
+Index: linux-2.6.24.7/arch/arm/tools/mach-types
+===================================================================
+--- linux-2.6.24.7.orig/arch/arm/tools/mach-types	2009-09-16 19:31:56.000000000 +0100
++++ linux-2.6.24.7/arch/arm/tools/mach-types	2009-09-16 19:32:41.000000000 +0100
+@@ -1367,3 +1367,4 @@
+ csb726			MACH_CSB726		CSB726			1359
+ tik27			MACH_TIK27		TIK27			1360
+ mx_uc7420		MACH_MX_UC7420		MX_UC7420		1361
++sim_one			MACH_SIM_ONE		SIM_ONE			1476
+Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/memory.h
+===================================================================
+--- linux-2.6.24.7.orig/include/asm-arm/arch-ep93xx/memory.h	2009-09-16 19:37:53.000000000 +0100
++++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/memory.h	2009-09-16 19:38:40.000000000 +0100
+@@ -5,7 +5,11 @@
+ #ifndef __ASM_ARCH_MEMORY_H
+ #define __ASM_ARCH_MEMORY_H
+ 
++#if defined(CONFIG_MACH_SIM_ONE)
++#define PHYS_OFFSET		UL(0xc0000000)
++#else
+ #define PHYS_OFFSET		UL(0x00000000)
++#endif
+ 
+ #define __bus_to_virt(x)	__phys_to_virt(x)
+ #define __virt_to_bus(x)	__virt_to_phys(x)
+Index: linux-2.6.24.7/Makefile
+===================================================================
+--- linux-2.6.24.7.orig/Makefile	2009-09-16 20:23:19.000000000 +0100
++++ linux-2.6.24.7/Makefile	2009-09-16 20:39:28.000000000 +0100
+@@ -1,7 +1,7 @@
+ VERSION = 2
+ PATCHLEVEL = 6
+ SUBLEVEL = 24
+-EXTRAVERSION = .7
++EXTRAVERSION = .7-simone
+ NAME = Err Metey! A Heury Beelge-a Ret!
+ 
+ # *DOCUMENTATION*
