@@ -17,7 +17,6 @@ They are a "quilt" archive. To make a kernel image:
 
    export ARCH=arm
    make simone_defconfig
-   make menuconfig 	# set Kernel features -> Use ARM EABI to YES
    CROSS_COMPILE=arm-linux-gnueabi- make uImage modules
 
 For more detailed compilation instructions see
