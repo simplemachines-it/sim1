@@ -1,7 +1,7 @@
 Index: linux-2.6.24.7/drivers/input/touchscreen/Kconfig
 ===================================================================
---- linux-2.6.24.7.orig/drivers/input/touchscreen/Kconfig	2009-09-16 17:16:01.000000000 +0100
-+++ linux-2.6.24.7/drivers/input/touchscreen/Kconfig	2009-09-16 17:17:38.000000000 +0100
+--- linux-2.6.24.7.orig/drivers/input/touchscreen/Kconfig	2008-05-07 00:22:34.000000000 +0100
++++ linux-2.6.24.7/drivers/input/touchscreen/Kconfig	2009-09-17 17:40:06.000000000 +0100
 @@ -91,6 +91,10 @@
  	  To compile this driver as a module, choose M here: the
  	  module will be called elo.
@@ -15,20 +15,20 @@ Index: linux-2.6.24.7/drivers/input/touchscreen/Kconfig
  	select SERIO
 Index: linux-2.6.24.7/drivers/input/touchscreen/Makefile
 ===================================================================
---- linux-2.6.24.7.orig/drivers/input/touchscreen/Makefile	2009-09-16 17:18:01.000000000 +0100
-+++ linux-2.6.24.7/drivers/input/touchscreen/Makefile	2009-09-16 17:18:48.000000000 +0100
+--- linux-2.6.24.7.orig/drivers/input/touchscreen/Makefile	2008-05-07 00:22:34.000000000 +0100
++++ linux-2.6.24.7/drivers/input/touchscreen/Makefile	2009-09-17 17:45:31.000000000 +0100
 @@ -9,6 +9,7 @@
  obj-$(CONFIG_TOUCHSCREEN_CORGI)		+= corgi_ts.o
  obj-$(CONFIG_TOUCHSCREEN_GUNZE)		+= gunze.o
  obj-$(CONFIG_TOUCHSCREEN_ELO)		+= elo.o
-+obj-$(CONFIG_TOUCHSCREEN_EP93XX)	+= ep93xx_ts.o.o
++obj-$(CONFIG_TOUCHSCREEN_EP93XX)	+= ep93xx_ts.o
  obj-$(CONFIG_TOUCHSCREEN_FUJITSU)	+= fujitsu_ts.o
  obj-$(CONFIG_TOUCHSCREEN_MTOUCH)	+= mtouch.o
  obj-$(CONFIG_TOUCHSCREEN_MK712)		+= mk712.o
 Index: linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.c
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.c	2009-09-16 17:23:48.000000000 +0100
++++ linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.c	2009-09-17 17:40:06.000000000 +0100
 @@ -0,0 +1,1117 @@
 +/*
 + *  linux/drivers/input/touchscreen/ep93xx_ts.c
@@ -1150,7 +1150,7 @@ Index: linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.c
 Index: linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.h	2009-09-16 17:19:20.000000000 +0100
++++ linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.h	2009-09-17 17:40:06.000000000 +0100
 @@ -0,0 +1,53 @@
 +/*
 + * ep93xx_ts.h
@@ -1207,8 +1207,8 @@ Index: linux-2.6.24.7/drivers/input/touchscreen/ep93xx_ts.h
 +#endif
 Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/hardware.h
 ===================================================================
---- linux-2.6.24.7.orig/include/asm-arm/arch-ep93xx/hardware.h	2009-09-16 17:21:16.000000000 +0100
-+++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/hardware.h	2009-09-16 17:21:45.000000000 +0100
+--- linux-2.6.24.7.orig/include/asm-arm/arch-ep93xx/hardware.h	2008-05-07 00:22:34.000000000 +0100
++++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/hardware.h	2009-09-17 17:44:50.000000000 +0100
 @@ -5,6 +5,7 @@
  #include "ep93xx-regs.h"
  
@@ -1220,7 +1220,7 @@ Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/hardware.h
 Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/regs_touch.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/regs_touch.h	2009-09-16 17:23:29.000000000 +0100
++++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/regs_touch.h	2009-09-17 17:40:06.000000000 +0100
 @@ -0,0 +1,95 @@
 +/*=============================================================================
 + *
