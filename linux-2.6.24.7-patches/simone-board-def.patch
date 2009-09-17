@@ -1,7 +1,7 @@
 Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Kconfig
 ===================================================================
---- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Kconfig	2008-05-07 00:22:34.000000000 +0100
-+++ linux-2.6.24.7/arch/arm/mach-ep93xx/Kconfig	2009-09-17 17:26:41.000000000 +0100
+--- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Kconfig	2009-09-17 17:44:50.000000000 +0100
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/Kconfig	2009-09-17 17:45:39.000000000 +0100
 @@ -82,6 +82,12 @@
           Say 'Y' here if you want your kernel to support the
           Contec Hypercontrol Micro9-L board.
@@ -17,8 +17,8 @@ Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Kconfig
  	help
 Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile
 ===================================================================
---- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Makefile	2009-09-17 17:26:41.000000000 +0100
-+++ linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile	2009-09-17 17:26:41.000000000 +0100
+--- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Makefile	2009-09-17 17:44:49.000000000 +0100
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile	2009-09-17 17:45:39.000000000 +0100
 @@ -15,4 +15,5 @@
  obj-$(CONFIG_MACH_EDB9315A)	+= edb9315a.o
  obj-$(CONFIG_MACH_GESBC9312)	+= gesbc9312.o
@@ -27,8 +27,8 @@ Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile
  obj-$(CONFIG_MACH_TS72XX)	+= ts72xx.o
 Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile.boot
 ===================================================================
---- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Makefile.boot	2008-05-07 00:22:34.000000000 +0100
-+++ linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile.boot	2009-09-17 17:26:41.000000000 +0100
+--- linux-2.6.24.7.orig/arch/arm/mach-ep93xx/Makefile.boot	2009-09-17 17:44:50.000000000 +0100
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile.boot	2009-09-17 17:45:39.000000000 +0100
 @@ -1,2 +1,4 @@
     zreladdr-y	:= 0x00008000
  params_phys-y	:= 0x00000100
@@ -37,7 +37,7 @@ Index: linux-2.6.24.7/arch/arm/mach-ep93xx/Makefile.boot
 Index: linux-2.6.24.7/arch/arm/mach-ep93xx/simone.c
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/arch/arm/mach-ep93xx/simone.c	2009-09-17 17:26:41.000000000 +0100
++++ linux-2.6.24.7/arch/arm/mach-ep93xx/simone.c	2009-09-17 17:45:39.000000000 +0100
 @@ -0,0 +1,211 @@
 +/*
 + * arch/arm/mach-ep93xx/simone.c
@@ -252,8 +252,8 @@ Index: linux-2.6.24.7/arch/arm/mach-ep93xx/simone.c
 +MACHINE_END
 Index: linux-2.6.24.7/arch/arm/tools/mach-types
 ===================================================================
---- linux-2.6.24.7.orig/arch/arm/tools/mach-types	2008-05-07 00:22:34.000000000 +0100
-+++ linux-2.6.24.7/arch/arm/tools/mach-types	2009-09-17 17:26:41.000000000 +0100
+--- linux-2.6.24.7.orig/arch/arm/tools/mach-types	2009-09-17 17:44:49.000000000 +0100
++++ linux-2.6.24.7/arch/arm/tools/mach-types	2009-09-17 17:45:39.000000000 +0100
 @@ -1367,3 +1367,4 @@
  csb726			MACH_CSB726		CSB726			1359
  tik27			MACH_TIK27		TIK27			1360
@@ -261,8 +261,8 @@ Index: linux-2.6.24.7/arch/arm/tools/mach-types
 +sim_one			MACH_SIM_ONE		SIM_ONE			1476
 Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/memory.h
 ===================================================================
---- linux-2.6.24.7.orig/include/asm-arm/arch-ep93xx/memory.h	2008-05-07 00:22:34.000000000 +0100
-+++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/memory.h	2009-09-17 17:26:41.000000000 +0100
+--- linux-2.6.24.7.orig/include/asm-arm/arch-ep93xx/memory.h	2009-09-17 17:44:50.000000000 +0100
++++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/memory.h	2009-09-17 17:45:39.000000000 +0100
 @@ -5,7 +5,11 @@
  #ifndef __ASM_ARCH_MEMORY_H
  #define __ASM_ARCH_MEMORY_H
@@ -277,8 +277,8 @@ Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/memory.h
  #define __virt_to_bus(x)	__virt_to_phys(x)
 Index: linux-2.6.24.7/Makefile
 ===================================================================
---- linux-2.6.24.7.orig/Makefile	2008-05-07 00:22:34.000000000 +0100
-+++ linux-2.6.24.7/Makefile	2009-09-17 17:26:41.000000000 +0100
+--- linux-2.6.24.7.orig/Makefile	2009-09-17 17:44:50.000000000 +0100
++++ linux-2.6.24.7/Makefile	2009-09-17 17:45:39.000000000 +0100
 @@ -1,7 +1,7 @@
  VERSION = 2
  PATCHLEVEL = 6
@@ -291,8 +291,8 @@ Index: linux-2.6.24.7/Makefile
 Index: linux-2.6.24.7/arch/arm/configs/simone_defconfig
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/arch/arm/configs/simone_defconfig	2009-09-17 17:33:15.000000000 +0100
-@@ -0,0 +1,1379 @@
++++ linux-2.6.24.7/arch/arm/configs/simone_defconfig	2009-09-17 17:59:05.000000000 +0100
+@@ -0,0 +1,1380 @@
 +#
 +# Automatically generated make config: don't edit
 +# Linux kernel version: 2.6.24.7
@@ -506,7 +506,8 @@ Index: linux-2.6.24.7/arch/arm/configs/simone_defconfig
 +CONFIG_PREEMPT=y
 +# CONFIG_NO_IDLE_HZ is not set
 +CONFIG_HZ=100
-+# CONFIG_AEABI is not set
++CONFIG_AEABI=y
++# CONFIG_OABI_COMPAT is not set
 +# CONFIG_ARCH_DISCONTIGMEM_ENABLE is not set
 +CONFIG_SELECT_MEMORY_MODEL=y
 +CONFIG_FLATMEM_MANUAL=y
