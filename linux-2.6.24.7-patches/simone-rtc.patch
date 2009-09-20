@@ -1,7 +1,7 @@
 Index: linux-2.6.24.7/drivers/i2c/chips/ds1337.c
 ===================================================================
---- linux-2.6.24.7.orig/drivers/i2c/chips/ds1337.c	2009-09-16 16:58:20.000000000 +0100
-+++ linux-2.6.24.7/drivers/i2c/chips/ds1337.c	2009-09-16 16:53:57.000000000 +0100
+--- linux-2.6.24.7.orig/drivers/i2c/chips/ds1337.c	2008-05-07 00:22:34.000000000 +0100
++++ linux-2.6.24.7/drivers/i2c/chips/ds1337.c	2009-09-17 18:10:21.000000000 +0100
 @@ -28,6 +28,12 @@
  #define DS1337_REG_DATE		4
  #define DS1337_REG_MONTH	5
@@ -32,8 +32,8 @@ Index: linux-2.6.24.7/drivers/i2c/chips/ds1337.c
  		u8 buf[1+16];	/* First byte is interpreted as address */
 Index: linux-2.6.24.7/drivers/rtc/Kconfig
 ===================================================================
---- linux-2.6.24.7.orig/drivers/rtc/Kconfig	2009-09-16 16:58:20.000000000 +0100
-+++ linux-2.6.24.7/drivers/rtc/Kconfig	2009-09-16 16:53:57.000000000 +0100
+--- linux-2.6.24.7.orig/drivers/rtc/Kconfig	2008-05-07 00:22:34.000000000 +0100
++++ linux-2.6.24.7/drivers/rtc/Kconfig	2009-09-20 14:07:22.000000000 +0100
 @@ -392,6 +392,14 @@
  	  This driver can also be built as a module. If so, the module
  	  will be called rtc-ep93xx.
@@ -44,15 +44,15 @@ Index: linux-2.6.24.7/drivers/rtc/Kconfig
 +	help
 +	  If you say yes here, the EP93XX driver will use the
 +	  battery-backed-up DS1337 RTC chip on the SIM.ONE board.
-+	  You almost certainyl want this.
++	  You almost certainly want this.
 +
  config RTC_DRV_SA1100
  	tristate "SA11x0/PXA2xx"
  	depends on ARCH_SA1100 || ARCH_PXA
 Index: linux-2.6.24.7/drivers/rtc/rtc-ep93xx.c
 ===================================================================
---- linux-2.6.24.7.orig/drivers/rtc/rtc-ep93xx.c	2009-09-16 16:58:20.000000000 +0100
-+++ linux-2.6.24.7/drivers/rtc/rtc-ep93xx.c	2009-09-16 16:53:57.000000000 +0100
+--- linux-2.6.24.7.orig/drivers/rtc/rtc-ep93xx.c	2008-05-07 00:22:34.000000000 +0100
++++ linux-2.6.24.7/drivers/rtc/rtc-ep93xx.c	2009-09-17 18:10:21.000000000 +0100
 @@ -13,6 +13,13 @@
  #include <linux/rtc.h>
  #include <linux/platform_device.h>
