@@ -1,7 +1,7 @@
 Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/ep93xx-regs.h
 ===================================================================
---- linux-2.6.24.7.orig/include/asm-arm/arch-ep93xx/ep93xx-regs.h	2009-09-16 16:31:24.000000000 +0100
-+++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/ep93xx-regs.h	2009-09-16 16:40:54.000000000 +0100
+--- linux-2.6.24.7.orig/include/asm-arm/arch-ep93xx/ep93xx-regs.h	2008-05-07 00:22:34.000000000 +0100
++++ linux-2.6.24.7/include/asm-arm/arch-ep93xx/ep93xx-regs.h	2009-09-26 12:49:36.000000000 +0100
 @@ -23,6 +23,33 @@
  #define EP93XX_APB_SIZE			0x00200000
  
@@ -36,7 +36,16 @@ Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/ep93xx-regs.h
  /* AHB peripherals */
  #define EP93XX_DMA_BASE			(EP93XX_AHB_VIRT_BASE + 0x00000000)
  
-@@ -92,6 +119,7 @@
+@@ -70,6 +97,8 @@
+ #define EP93XX_I2S_BASE			(EP93XX_APB_VIRT_BASE + 0x00020000)
+ 
+ #define EP93XX_SECURITY_BASE		(EP93XX_APB_VIRT_BASE + 0x00030000)
++#define EP93XX_SECURITY_REG(x)		(EP93XX_SECURITY_BASE + (x))
++#define EP93XX_SECURITY_UNIQID		EP93XX_SECURITY_REG(0x2440)
+ 
+ #define EP93XX_GPIO_BASE		(EP93XX_APB_VIRT_BASE + 0x00040000)
+ #define EP93XX_GPIO_REG(x)		(EP93XX_GPIO_BASE + (x))
+@@ -92,6 +121,7 @@
  #define EP93XX_AAC_BASE			(EP93XX_APB_VIRT_BASE + 0x00080000)
  
  #define EP93XX_SPI_BASE			(EP93XX_APB_VIRT_BASE + 0x000a0000)
@@ -44,11 +53,11 @@ Index: linux-2.6.24.7/include/asm-arm/arch-ep93xx/ep93xx-regs.h
  
  #define EP93XX_IRDA_BASE		(EP93XX_APB_VIRT_BASE + 0x000b0000)
  
-@@ -126,8 +154,425 @@
+@@ -126,8 +156,425 @@
  #define EP93XX_SYSCON_DEVICE_CONFIG	EP93XX_SYSCON_REG(0x80)
  #define EP93XX_SYSCON_DEVICE_CONFIG_CRUNCH_ENABLE	0x00800000
  #define EP93XX_SYSCON_SWLOCK		EP93XX_SYSCON_REG(0xc0)
-+#define EP93XX_SYSCON_CHIP_ID           EP93XX_SYSCON_REG(0x94)
++#define EP93XX_SYSCON_CHIP_ID		EP93XX_SYSCON_REG(0x94)
 +#define EP93XX_SYSCON_BMAR              EP93XX_SYSCON_REG(0x54)
 +#define EP93XX_SYSCON_I2SDIV            EP93XX_SYSCON_REG(0x8C)
 +#define EP93XX_SYSCON_DEVCFG_CONFIG_Mong   	0x02000000

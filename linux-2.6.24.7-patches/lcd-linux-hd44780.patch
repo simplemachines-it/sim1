@@ -1,7 +1,7 @@
 Index: linux-2.6.24.7/arch/arm/Kconfig
 ===================================================================
---- linux-2.6.24.7.orig/arch/arm/Kconfig	2009-09-16 12:20:57.000000000 +0100
-+++ linux-2.6.24.7/arch/arm/Kconfig	2009-09-16 12:21:33.000000000 +0100
+--- linux-2.6.24.7.orig/arch/arm/Kconfig	2009-09-26 12:45:05.000000000 +0100
++++ linux-2.6.24.7/arch/arm/Kconfig	2009-09-26 12:45:07.000000000 +0100
 @@ -1066,6 +1066,8 @@
  
  source "drivers/mmc/Kconfig"
@@ -13,8 +13,8 @@ Index: linux-2.6.24.7/arch/arm/Kconfig
  source "drivers/rtc/Kconfig"
 Index: linux-2.6.24.7/drivers/Makefile
 ===================================================================
---- linux-2.6.24.7.orig/drivers/Makefile	2009-09-16 12:22:05.000000000 +0100
-+++ linux-2.6.24.7/drivers/Makefile	2009-09-16 12:23:27.000000000 +0100
+--- linux-2.6.24.7.orig/drivers/Makefile	2009-09-26 12:45:05.000000000 +0100
++++ linux-2.6.24.7/drivers/Makefile	2009-09-26 12:45:07.000000000 +0100
 @@ -91,3 +91,4 @@
  obj-$(CONFIG_OF)		+= of/
  obj-$(CONFIG_SSB)		+= ssb/
@@ -23,7 +23,7 @@ Index: linux-2.6.24.7/drivers/Makefile
 Index: linux-2.6.24.7/drivers/lcd-linux/Config.in
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/Config.in	2009-09-16 12:07:42.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/Config.in	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,8 @@
 +if [ "$CONFIG_EXPERIMENTAL" = "y" ]; then
 +   mainmenu_option next_comment
@@ -36,7 +36,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/Config.in
 Index: linux-2.6.24.7/drivers/lcd-linux/Kconfig
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/Kconfig	2009-09-16 12:07:42.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/Kconfig	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,33 @@
 +menu "LCD-Linux support"
 +	depends on EXPERIMENTAL
@@ -74,7 +74,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/Kconfig
 Index: linux-2.6.24.7/drivers/lcd-linux/Makefile
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/Makefile	2009-09-16 12:42:26.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/Makefile	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,8 @@
 +#
 +#
@@ -87,7 +87,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/Makefile
 Index: linux-2.6.24.7/drivers/lcd-linux/cgram/default.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/cgram/default.h	2009-09-16 12:39:34.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/cgram/default.h	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,37 @@
 +/* default.h
 + *
@@ -129,7 +129,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/cgram/default.h
 Index: linux-2.6.24.7/drivers/lcd-linux/charmap.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/charmap.h	2009-09-16 12:39:43.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/charmap.h	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,79 @@
 +/* charmap.h
 + *
@@ -213,7 +213,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/charmap.h
 Index: linux-2.6.24.7/drivers/lcd-linux/commands.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/commands.h	2009-09-16 12:39:50.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/commands.h	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,77 @@
 +/* commands.h
 + *
@@ -295,7 +295,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/commands.h
 Index: linux-2.6.24.7/drivers/lcd-linux/config.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/config.h	2009-09-16 12:39:58.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/config.h	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,73 @@
 +/* config.h
 + *
@@ -373,7 +373,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/config.h
 Index: linux-2.6.24.7/drivers/lcd-linux/hd44780.c
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/hd44780.c	2009-09-16 12:42:04.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/hd44780.c	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,860 @@
 +/* hd44780.c
 + *
@@ -1238,7 +1238,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/hd44780.c
 Index: linux-2.6.24.7/drivers/lcd-linux/lcd-linux.c
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/drivers/lcd-linux/lcd-linux.c	2009-09-16 12:42:21.000000000 +0100
++++ linux-2.6.24.7/drivers/lcd-linux/lcd-linux.c	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,2892 @@
 +/* lcd-linux.c
 + *
@@ -4135,7 +4135,7 @@ Index: linux-2.6.24.7/drivers/lcd-linux/lcd-linux.c
 Index: linux-2.6.24.7/include/linux/hd44780.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/include/linux/hd44780.h	2009-09-16 12:07:42.000000000 +0100
++++ linux-2.6.24.7/include/linux/hd44780.h	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,46 @@
 +/* hd44780.h
 + *
@@ -4186,7 +4186,7 @@ Index: linux-2.6.24.7/include/linux/hd44780.h
 Index: linux-2.6.24.7/include/linux/lcd-linux.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux-2.6.24.7/include/linux/lcd-linux.h	2009-09-16 12:07:42.000000000 +0100
++++ linux-2.6.24.7/include/linux/lcd-linux.h	2009-09-26 12:45:07.000000000 +0100
 @@ -0,0 +1,151 @@
 +/* lcd-linux.h
 + *

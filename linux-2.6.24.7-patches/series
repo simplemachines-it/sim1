@@ -3,9 +3,10 @@ lcd-linux-hd44780.patch
 ep93xx-i2c.patch
 simone-rtc.patch
 ep93xx-dma.patch
-ep93xx_touchscreen.patch
+ep93xx-touchscreen.patch
 ep93xx-eth.patch
-ep93xx_spi.patch
+ep93xx-spi.patch
 ep93xx-fb.patch
 ep93xx-snd-ac97.patch
 simone-board-def.patch
+ep93xx-cpuinfo.patch
