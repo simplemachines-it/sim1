@@ -1,0 +1,149 @@
+Index: u-boot-1.1.6/Makefile
+===================================================================
+--- u-boot-1.1.6.orig/Makefile	2009-11-26 10:48:59.000000000 +0000
++++ u-boot-1.1.6/Makefile	2009-11-26 10:58:55.000000000 +0000
+@@ -2043,6 +2043,11 @@
+ 	@echo "TEXT_BASE = 0xC54F0000" > $(obj)board/cirrus/edb93xx/config.mk
+ 	@echo "... configured for Cirrus Logic EDB9315A board"
+ 
++sim_one_config:
++	@echo "#define CONFIG_SIM_ONE" >>include/config.h
++	@./mkconfig -a edb93xx arm arm920t edb93xx cirrus ep93xx
++	@echo "TEXT_BASE = 0xC54F0000" > $(obj)board/cirrus/edb93xx/config.mk
++	@echo "... configured for Simplemachines Sim.One board"
+ 
+ #########################################################################
+ ## XScale Systems
+Index: u-boot-1.1.6/board/cirrus/edb93xx/edb93xx.c
+===================================================================
+--- u-boot-1.1.6.orig/board/cirrus/edb93xx/edb93xx.c	2009-11-26 10:37:08.000000000 +0000
++++ u-boot-1.1.6/board/cirrus/edb93xx/edb93xx.c	2009-11-26 11:14:08.000000000 +0000
+@@ -48,17 +48,16 @@
+     //
+ 	HAL_READ_UINT32(EP93XX_SMCBCR6,smcconfig);
+ 	smcconfig &= EP93XX_SMC_WD_MASK;	
+-#if (defined(CONFIG_EP9301) || defined(CONFIG_EP9302))
++#if (defined(CONFIG_EDB9301) || defined(CONFIG_EDB9302))
+ 	HAL_WRITE_UINT32(EP93XX_SMCBCR6, (smcconfig | EP93XX_SMC_WD_16));
+-	
+-#elif (defined(CONFIG_EP9302A) || defined(CONFIG_EP9307A) || defined(CONFIG_EP9315A)) 
++
++#elif (defined(CONFIG_EDB9302A) || defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A))
+ 
+ #if defined(EDB93XX_FLASH_WIDTH_32BITS)
+ 	HAL_WRITE_UINT32(EP93XX_SMCBCR6, (smcconfig | EP93XX_SMC_WD_32));
+ 
+ #elif defined(EDB93XX_FLASH_WIDTH_16BITS)
+ 	HAL_WRITE_UINT32(EP93XX_SMCBCR6, (smcconfig | EP93XX_SMC_WD_16));
+-
+ #else
+ #error "YOU have to decide the flash width for A-boards"
+ #endif
+@@ -67,6 +66,9 @@
+ 	defined(CONFIG_EDB9315))
+ 
+ 	HAL_WRITE_UINT32(EP93XX_SMCBCR6, (smcconfig | EP93XX_SMC_WD_32));
++
++#elif (defined(CONFIG_SIM_ONE))
++	HAL_WRITE_UINT32(EP93XX_SMCBCR6, (smcconfig | EP93XX_SMC_WD_16));
+ #else
+ #error "CONFIG_EDB93nn is not properly #define'd"
+ #endif
+@@ -104,6 +106,9 @@
+ 
+ #elif defined(CONFIG_EDB9315A)
+ 	gd->bd->bi_arch_number = 772;
++
++#elif defined(CONFIG_SIM_ONE)
++	gd->bd->bi_arch_number = 1476;
+ #else
+ #error "CONFIG_EDB93nn is not properly #define'd"
+ #endif
+Index: u-boot-1.1.6/include/configs/edb93xx.h
+===================================================================
+--- u-boot-1.1.6.orig/include/configs/edb93xx.h	2009-11-26 10:41:56.000000000 +0000
++++ u-boot-1.1.6/include/configs/edb93xx.h	2009-11-26 10:48:49.000000000 +0000
+@@ -148,6 +148,9 @@
+ #elif defined(CONFIG_EDB9315A)
+ #define CFG_PROMPT                     "EDB9315A> "
+ 
++#elif defined(CONFIG_SIM_ONE)
++#define CFG_PROMPT                     "SIM.ONE> "
++
+ #else
+ #define CFG_PROMPT                     "EDB93xx> "
+ #endif  /* defined(CONFIG_EDB93nn) */
+@@ -162,7 +165,7 @@
+ 
+ 
+ 
+-#if (defined(CONFIG_EDB9302A) || defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A))
++#if (defined(CONFIG_EDB9302A) || defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A) || defined(CONFIG_SIM_ONE))
+       #define        CFG_LOAD_ADDR           0xc0008000      /* default load address */
+ #else
+       #define        CFG_LOAD_ADDR           0x00080000      /* default load address */
+@@ -189,7 +192,8 @@
+  */
+ #if (defined(CONFIG_EDB9301) || defined(CONFIG_EDB9302) || defined(CONFIG_EDB9302A) || \
+                defined(CONFIG_EDB9307) || defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9312) || \
+-               defined(CONFIG_EDB9315) || defined(CONFIG_EDB9315A))
++               defined(CONFIG_EDB9315) || defined(CONFIG_EDB9315A) || \
++               defined(CONFIG_SIM_ONE))
+ #define CONFIG_DRIVER_EP93XX_MAC
+ #define CONFIG_MII_SUPPRESS_PREAMBLE
+ #define CONFIG_MII
+@@ -247,7 +251,8 @@
+ #define CFG_MEMTEST_END                (0x01F00000)
+ 
+ 
+-#elif (defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A))
++#elif (defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A) || \
++       defined(CONFIG_SIM_ONE))
+ #define CONFIG_NR_DRAM_BANKS           (2)
+ #define CONFIG_EDB93XX_SDRAM_CS_SDCSn0
+ #define PHYS_SDRAM_1                   (0xC0000000)
+@@ -323,7 +328,7 @@
+ 
+ #define CFG_ENV_SECT_SIZE              (0x00020000)
+ 
+-#elif (defined(CONFIG_EDB9302A) || defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A))
++#elif (defined(CONFIG_EDB9302A) || defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A) || defined(CONFIG_SIM_ONE))
+ 
+ #define CFG_MAX_FLASH_SECT             (512)  //for AMD S29GL512N
+ 
+@@ -332,6 +332,11 @@
+ #define CFG_FLASH_UNLOCK
+ #endif
+ 
++#if defined(CONFIG_SIM_ONE)
++# define EDB93XX_FLASH_WIDTH_16BITS
++# undef  EDB93XX_FLASH_WIDTH_32BITS
++#endif
++
+ #if defined(EDB93XX_FLASH_WIDTH_32BITS)
+ #define CFG_ENV_SECT_SIZE 	       (0x00040000)
+ 
+Index: u-boot-1.1.6/net/tftp.c
+===================================================================
+--- u-boot-1.1.6.orig/net/tftp.c	2009-11-26 10:51:25.000000000 +0000
++++ u-boot-1.1.6/net/tftp.c	2009-11-26 10:53:50.000000000 +0000
+@@ -69,7 +69,8 @@
+ 	int i, rc = 0, ret=0;
+ #ifdef CFG_DIRECT_FLASH_TFTP
+ #if (defined(CONFIG_EDB9301) || defined(CONFIG_EDB9302A) || \
+-                defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A))
++                defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A) || \
++		defined(CONFIG_SIM_ONE))
+         if(!(load_addr >= PHYS_SDRAM_1))
+         {
+ #endif/*defined EDB93XX*/
+@@ -91,7 +92,8 @@
+ 			}
+ 		}
+ #if (defined(CONFIG_EDB9301) || defined(CONFIG_EDB9302A) || \
+-                defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A))
++                defined(CONFIG_EDB9307A) || defined(CONFIG_EDB9315A) || \
++		defined(CONFIG_SIM_ONE))
+         }
+ #endif /*defined(CONFIG_EDB93xx*/
+ 
