@@ -1,0 +1,23 @@
+These are patches for Linux kernel 2.6.24.7 to drive the SIM.ONE single board
+computer by simplemachines.it
+
+They are derived from the Cirrus Logic Linux kernel for the EDB9307 board
+and the lcd-linux project.
+
+They are a "quilt" archive. To make a kernel image:
+
+   hg clone https://sim1.googlecode.com/hg/ sim1
+
+   wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.24.7.tar.bz2
+   tar xjf linux-2.6.24.7.tar.bz2
+
+   cd linux-2.6.24.7
+   ln -s ../sim1/linux-2.6.24.7-patches patches
+   quilt push -a
+
+   export ARCH=arm
+   make simone_defconfig
+   CROSS_COMPILE=arm-linux-gnueabi- make uImage modules
+
+For more detailed compilation instructions see
+http://code.google.com/p/sim1/wiki/DebianKernel

@@ -1,0 +1,18 @@
+This is the mercurial repository for the SIM.ONE single board computer,
+see simplemachines.it and http://code.google.com/p/sim1/
+
+linux-2.6.24.7-patches
+	Supports all the Sim.One hardware. This is the best kernel so far.
+
+linux-2.6.25.20-patches
+
+linux-2.6.30.9-patches
+
+linux-2.6.32-patches
+	Uses the recently-added mainline support for ep93xx devices
+	(ethernet, SD/MMC card over SPI etc)
+	but no support for ALSA sound, the battery-backed real time clock
+	or the video frame buffer.
+
+u-boot-1.1.6-patches
+	The patches to the first stage bootloader
