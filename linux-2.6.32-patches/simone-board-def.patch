@@ -3,7 +3,7 @@
  arch/arm/mach-ep93xx/Kconfig       |    7 
  arch/arm/mach-ep93xx/Makefile      |    1 
  arch/arm/mach-ep93xx/Makefile.boot |    2 
- arch/arm/mach-ep93xx/simone.c      |  217 +++++
+ arch/arm/mach-ep93xx/simone.c      |  230 +++++
  5 files changed, 1607 insertions(+)
 
 --- /dev/null
@@ -1709,7 +1709,7 @@
     zreladdr-$(CONFIG_EP93XX_SDCE1_PHYS_OFFSET)		:= 0xd0008000
 --- /dev/null
 +++ linux-2.6.32/arch/arm/mach-ep93xx/simone.c
-@@ -0,0 +1,217 @@
+@@ -0,0 +1,230 @@
 +/*
 + * arch/arm/mach-ep93xx/simone.c
 + * Simplemachines SIM.ONE support.
@@ -1742,6 +1742,9 @@
 +#include <asm/mach-types.h>
 +#include <asm/mach/arch.h>
 +#include <asm/gpio.h>
++#if defined(CONFIG_FB_EP93XX)
++# include <mach/fb.h>
++#endif
 +
 +static struct physmap_flash_data simone_flash_data = {
 +	.width		= 2,
@@ -1891,6 +1894,13 @@
 +	}
 +};
 +
++#if defined(CONFIG_FB_EP93XX)
++static struct ep93xxfb_mach_info ep93xx_fb_info = {
++	.num_modes	= EP93XXFB_USE_MODEDB,
++	.bpp		= 16,
++};
++#endif
++
 +static struct platform_device ep93xx_eth_device = {
 +	.name		= "ep93xx-eth",
 +	.id		= -1,
@@ -1910,6 +1920,9 @@
 +	platform_device_register(&simone_flash);
 +        platform_device_register(&ep93xx_ac97_device);
 +	platform_device_register(&ep93xx_eth_device);
++#if defined(CONFIG_FB_EP93XX)
++	ep93xx_register_fb(&ep93xx_fb_info);
++#endif
 +#if defined(CONFIG_SPI_EP93XX) || defined(CONFIG_SPI_EP93XX_MODULE)
 +	dev_set_name(&ep93xx_spi_device.dev, "apb:spi");
 +	platform_device_register(&ep93xx_spi_device);
