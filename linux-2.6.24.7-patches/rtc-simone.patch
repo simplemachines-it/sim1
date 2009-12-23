@@ -19,7 +19,7 @@ Index: linux-2.6.24.7/drivers/i2c/chips/ds1337.c
  	status = i2c_smbus_read_byte_data(client, DS1337_REG_STATUS);
  	control = i2c_smbus_read_byte_data(client, DS1337_REG_CONTROL);
  
-+ #if (defined(CONFIG_MACH_SIM_ONE))
++#if (defined(CONFIG_MACH_SIM_ONE))
 + 	/* SIM.ONE board needs 32khz clock on SQW/INTB pin */
 + 	i2c_smbus_write_byte_data(client, DS1337_REG_CONTROL,
 +				  control & ~DS1337_BIT_INTCN);
