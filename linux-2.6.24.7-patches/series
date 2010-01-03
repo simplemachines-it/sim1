@@ -10,3 +10,4 @@ ep93xx-fb.patch
 ep93xx-snd-ac97.patch
 simone-board-def.patch
 ep93xx-cpuinfo.patch
+arm-flatmem-holes.patch
