@@ -45,7 +45,7 @@ Index: linux-2.6.24.7/drivers/video/ep93xxfb.c
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
 +++ linux-2.6.24.7/drivers/video/ep93xxfb.c	2009-09-16 18:42:15.000000000 +0100
-@@ -0,0 +1,1628 @@
+@@ -0,0 +1,1629 @@
 +#include <linux/module.h>
 +#include <linux/kernel.h>
 +#include <linux/reboot.h>
@@ -1660,6 +1660,7 @@ Index: linux-2.6.24.7/drivers/video/ep93xxfb.c
 +    DPRINTK("ep93xxfb_exit - enter\n");
 +    platform_driver_unregister(&ep93xxfb_driver);
 +    platform_device_unregister(&ep93xxfb_device);
++    free_irq(IRQ_EP93XX_GRAPHICS, NULL);
 +    DPRINTK("ep93xxfb_exit - exit\n");
 +}
 +
