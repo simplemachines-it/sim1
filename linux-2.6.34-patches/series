@@ -5,3 +5,4 @@ mmc_spi-fix-SDHC.patch
 simone-add-mmc_spi.patch
 ep93xx-cpuinfo.patch
 simone_defconfig.patch
+ep93xx-touchscreen.patch
