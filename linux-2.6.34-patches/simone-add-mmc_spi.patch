@@ -161,7 +161,7 @@ index cd93990..9349f01 100644
 +		.max_speed_hz		= 10 * 1000 * 1000,
 +		.bus_num		= 0,
 +		.chip_select		= 0,
-+		.mode			= SPI_MODE_0,
++		.mode			= SPI_MODE_3,
 +	},
 +};
 +
