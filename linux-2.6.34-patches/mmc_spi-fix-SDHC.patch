@@ -51,7 +51,7 @@ diff --git a/drivers/mmc/card/block.c b/drivers/mmc/card/block.c
 index cb9fbc8..acf3a88 100644
 --- a/drivers/mmc/card/block.c
 +++ b/drivers/mmc/card/block.c
-@@ -277,6 +277,25 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
+@@ -277,6 +277,22 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
  		if (brq.data.blocks > card->host->max_blk_count)
  			brq.data.blocks = card->host->max_blk_count;
  
@@ -67,9 +67,6 @@ index cb9fbc8..acf3a88 100644
 +
 +				if (s >= get_capacity(md->disk)) {
 +					disable_multi = 1;
-+					printk(KERN_DEBUG "%s: using single block "
-+					       "read for this request\n",
-+					       req->rq_disk->disk_name);
 +				}
 +			}
 +		}

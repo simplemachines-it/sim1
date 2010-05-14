@@ -1,10 +1,12 @@
---- /dev/null	2010-02-23 23:32:01.000000000 +0000
-+++ linux/arch/arm/configs/simone_defconfig	2010-05-14 12:21:53.000000000 +0100
-@@ -0,0 +1,1760 @@
+Index: linux/arch/arm/configs/simone_defconfig
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux/arch/arm/configs/simone_defconfig	2010-05-14 17:38:24.000000000 +0100
+@@ -0,0 +1,1766 @@
 +#
 +# Automatically generated make config: don't edit
-+# Linux kernel version: 2.6.34-rc6
-+# Fri May 14 12:21:34 2010
++# Linux kernel version: 2.6.34-rc7
++# Fri May 14 15:09:33 2010
 +#
 +CONFIG_ARM=y
 +CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -393,24 +395,7 @@
 +CONFIG_TCP_CONG_CUBIC=y
 +CONFIG_DEFAULT_TCP_CONG="cubic"
 +# CONFIG_TCP_MD5SIG is not set
-+CONFIG_IPV6=y
-+# CONFIG_IPV6_PRIVACY is not set
-+# CONFIG_IPV6_ROUTER_PREF is not set
-+# CONFIG_IPV6_OPTIMISTIC_DAD is not set
-+# CONFIG_INET6_AH is not set
-+# CONFIG_INET6_ESP is not set
-+# CONFIG_INET6_IPCOMP is not set
-+# CONFIG_IPV6_MIP6 is not set
-+# CONFIG_INET6_XFRM_TUNNEL is not set
-+# CONFIG_INET6_TUNNEL is not set
-+# CONFIG_INET6_XFRM_MODE_TRANSPORT is not set
-+# CONFIG_INET6_XFRM_MODE_TUNNEL is not set
-+# CONFIG_INET6_XFRM_MODE_BEET is not set
-+# CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION is not set
-+# CONFIG_IPV6_SIT is not set
-+# CONFIG_IPV6_TUNNEL is not set
-+# CONFIG_IPV6_MULTIPLE_TABLES is not set
-+# CONFIG_IPV6_MROUTE is not set
++# CONFIG_IPV6 is not set
 +# CONFIG_NETWORK_SECMARK is not set
 +# CONFIG_NETFILTER is not set
 +# CONFIG_IP_DCCP is not set
@@ -757,7 +742,30 @@
 +# CONFIG_MOUSE_SYNAPTICS_I2C is not set
 +# CONFIG_INPUT_JOYSTICK is not set
 +# CONFIG_INPUT_TABLET is not set
-+# CONFIG_INPUT_TOUCHSCREEN is not set
++CONFIG_INPUT_TOUCHSCREEN=y
++# CONFIG_TOUCHSCREEN_ADS7846 is not set
++# CONFIG_TOUCHSCREEN_AD7877 is not set
++# CONFIG_TOUCHSCREEN_AD7879_I2C is not set
++# CONFIG_TOUCHSCREEN_AD7879_SPI is not set
++# CONFIG_TOUCHSCREEN_AD7879 is not set
++# CONFIG_TOUCHSCREEN_DYNAPRO is not set
++# CONFIG_TOUCHSCREEN_EETI is not set
++CONFIG_TOUCHSCREEN_EP93XX=y
++# CONFIG_TOUCHSCREEN_FUJITSU is not set
++# CONFIG_TOUCHSCREEN_GUNZE is not set
++# CONFIG_TOUCHSCREEN_ELO is not set
++# CONFIG_TOUCHSCREEN_WACOM_W8001 is not set
++# CONFIG_TOUCHSCREEN_MCS5000 is not set
++# CONFIG_TOUCHSCREEN_MTOUCH is not set
++# CONFIG_TOUCHSCREEN_INEXIO is not set
++# CONFIG_TOUCHSCREEN_MK712 is not set
++# CONFIG_TOUCHSCREEN_PENMOUNT is not set
++# CONFIG_TOUCHSCREEN_TOUCHRIGHT is not set
++# CONFIG_TOUCHSCREEN_TOUCHWIN is not set
++# CONFIG_TOUCHSCREEN_USB_COMPOSITE is not set
++# CONFIG_TOUCHSCREEN_TOUCHIT213 is not set
++# CONFIG_TOUCHSCREEN_TSC2007 is not set
++# CONFIG_TOUCHSCREEN_W90X900 is not set
 +# CONFIG_INPUT_MISC is not set
 +
 +#
