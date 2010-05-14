@@ -79,7 +79,7 @@ index 90fb591..df2f0a1 100644
  
  #include <asm/mach/map.h>
  #include <asm/mach/time.h>
-@@ -398,6 +400,56 @@ void __init ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
+@@ -412,6 +414,56 @@ void __init ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
  	platform_device_register(&ep93xx_i2c_device);
  }
  
@@ -164,7 +164,7 @@ index c6dc14d..f11f1d7 100644
  
  struct ep93xx_eth_data
  {
-@@ -36,6 +38,8 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
+@@ -44,6 +46,8 @@ static inline void ep93xx_devcfg_clear_bits(unsigned int bits)
  void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
  void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
  			 struct i2c_board_info *devices, int num);
