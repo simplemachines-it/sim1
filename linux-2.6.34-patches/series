@@ -3,3 +3,5 @@ ep93xx-spi-1-v7.patch
 ep93xx-spi-2-v7.patch
 mmc_spi-fix-SDHC.patch
 simone-add-mmc_spi.patch
+ep93xx-cpuinfo.patch
+simone_defconfig.patch
