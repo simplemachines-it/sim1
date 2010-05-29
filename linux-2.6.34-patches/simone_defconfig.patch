@@ -1,12 +1,12 @@
 Index: linux/arch/arm/configs/simone_defconfig
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ linux/arch/arm/configs/simone_defconfig	2010-05-14 17:38:24.000000000 +0100
-@@ -0,0 +1,1766 @@
++++ linux/arch/arm/configs/simone_defconfig	2010-05-29 20:03:37.000000000 +0100
+@@ -0,0 +1,1767 @@
 +#
 +# Automatically generated make config: don't edit
 +# Linux kernel version: 2.6.34-rc7
-+# Fri May 14 15:09:33 2010
++# Sat May 29 19:58:36 2010
 +#
 +CONFIG_ARM=y
 +CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -818,6 +818,7 @@ Index: linux/arch/arm/configs/simone_defconfig
 +CONFIG_I2C_COMPAT=y
 +CONFIG_I2C_CHARDEV=y
 +CONFIG_I2C_HELPER_AUTO=y
++CONFIG_I2C_ALGOBIT=y
 +
 +#
 +# I2C Hardware Bus support
@@ -827,7 +828,7 @@ Index: linux/arch/arm/configs/simone_defconfig
 +# I2C system bus drivers (mostly embedded / system-on-chip)
 +#
 +# CONFIG_I2C_DESIGNWARE is not set
-+# CONFIG_I2C_GPIO is not set
++CONFIG_I2C_GPIO=y
 +# CONFIG_I2C_OCORES is not set
 +# CONFIG_I2C_SIMTEC is not set
 +# CONFIG_I2C_XILINX is not set
@@ -1378,7 +1379,7 @@ Index: linux/arch/arm/configs/simone_defconfig
 +#
 +# on-CPU RTC drivers
 +#
-+CONFIG_RTC_DRV_EP93XX=y
++# CONFIG_RTC_DRV_EP93XX is not set
 +# CONFIG_RTC_DRV_PL030 is not set
 +# CONFIG_RTC_DRV_PL031 is not set
 +# CONFIG_DMADEVICES is not set
