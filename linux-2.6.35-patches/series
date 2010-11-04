@@ -1,0 +1,5 @@
+simone-add-mmc_spi.patch
+ep93xx-cpuinfo.patch
+ep93xx-touchscreen.patch
+simone_defconfig.patch
+ep93xx-dma-fix.patch
