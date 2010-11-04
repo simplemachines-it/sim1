@@ -1,52 +1,15 @@
-                                                                                                                                                                                                                                                               
+This is a fix to the eo93xx dma driver, which was manifesting broken DMA to
+the audio device (blocks of noise).  Unfortunately it does NOT sort out the
+data errors that we are getting when using USB DMA with the RAM in 32-bit mode.
+
+   Martin Guy, 4 Nov 2010
+
 Delivered-To: martinwguy@gmail.com
-Received: by 10.231.14.135 with SMTP id g7cs57965iba;
-        Sun, 10 Oct 2010 03:54:12 -0700 (PDT)
-Received: by 10.223.105.148 with SMTP id t20mr1115349fao.101.1286708052107;
-        Sun, 10 Oct 2010 03:54:12 -0700 (PDT)
-Return-Path: <mika.westerberg@gmail.com>
-Received: from mail-bw0-f50.google.com (mail-bw0-f50.google.com [209.85.214.50])
-        by mx.google.com with ESMTP id o20si5593850faa.121.2010.10.10.03.54.10;
-        Sun, 10 Oct 2010 03:54:11 -0700 (PDT)
-Received-SPF: pass (google.com: domain of mika.westerberg@gmail.com designates 209.85.214.50 as permitted sender) client-ip=209.85.214.50;
-Authentication-Results: mx.google.com; spf=pass (google.com: domain of mika.westerberg@gmail.com designates 209.85.214.50 as permitted sender) smtp.mail=mika.westerberg@gmail.com; dkim=pass (test mode) header.i=@gmail.com
-Received: by mail-bw0-f50.google.com with SMTP id 12so812053bwz.9
-        for <martinwguy@gmail.com>; Sun, 10 Oct 2010 03:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:cc:subject
-         :date:message-id:x-mailer:in-reply-to:references:in-reply-to
-         :references;
-        bh=L1Y1DIoss2sv7kC3JbYXR426kkr+Yp2gRb779F8yV/Y=;
-        b=flRT2QVv/AwHTGbKWU7fBP6HAqdZQQeXzL0cS3D4k4C0BWlyR9erk1jC9eo0ZmcJrA
-         HJ94G/4ZTXnKzkGdgBy9/l/QK/KVZcpbRSsDzF+zTtH3iM75nhii4REOKofSCgOEf0C2
-         Fk4KwuPJdhm5mvJrDRv8P/4ww45Ijf0scHVAs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
-         :references;
-        b=ohKO3DgocSQtTDyNOS0CXh0y4+0MfRAXS6cSlzaERUGvf0Ot1k4/HO6ccLz0Lby1SE
-         WAIrRbfo/WuDM7+6PWM30CMg68k/NMUcDs/CwSnGDBmF+g5qmeWAak1AKPD7crP8X3MH
-         mEJ463bhVZvQrrgj9qdxcuZrxY/LI2nizrZRQ=
-Received: by 10.204.79.147 with SMTP id p19mr3837529bkk.129.1286708050573;
-        Sun, 10 Oct 2010 03:54:10 -0700 (PDT)
-Return-Path: <mika.westerberg@gmail.com>
-Received: from localhost.localdomain (a88-112-71-184.elisa-laajakaista.fi [88.112.71.184])
-        by mx.google.com with ESMTPS id l14sm3152916bkb.19.2010.10.10.03.54.07
-        (version=SSLv3 cipher=RC4-MD5);
-        Sun, 10 Oct 2010 03:54:09 -0700 (PDT)
-Sender: Mika Westerberg <mika.westerberg@gmail.com>
 From: Mika Westerberg <mika.westerberg@iki.fi>
 To: alsa-devel@alsa-project.org
 Cc: lrg@slimlogic.co.uk, broonie@opensource.wolfsonmicro.com, ryan@bluewatersys.com, hsweeten@visionengravers.com, martinwguy@gmail.com, linux-arm-kernel@lists.infradead.org, Mika Westerberg <mika.westerberg@iki.fi>
 Subject: [PATCH 1/4] ARM: ep93xx: DMA: fix channel_disable
 Date: Sun, 10 Oct 2010 13:54:09 +0300
-Message-Id: <43bf7ec49ce8ee7e7c7c375be053d6095ba53511.1286707213.git.mika.westerberg@iki.fi>
-X-Mailer: git-send-email 1.5.6.5
-In-Reply-To: <cover.1286707213.git.mika.westerberg@iki.fi>
-References: <cover.1286707213.git.mika.westerberg@iki.fi>
-In-Reply-To: <cover.1286707213.git.mika.westerberg@iki.fi>
-References: <cover.1286707213.git.mika.westerberg@iki.fi>
 
 When channel_disable() is called, it disables per channel interrupts and
 waits until channels state becomes STATE_STALL, and then disables the
