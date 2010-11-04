@@ -1,6 +1,7 @@
-This is a fix to the eo93xx dma driver, which was manifesting broken DMA to
-the audio device (blocks of noise).  Unfortunately it does NOT sort out the
-data errors that we are getting when using USB DMA with the RAM in 32-bit mode.
+This is a fix to the eo93xx dma driver, which was manifesting broken DMA
+to the audio device (blocks of noise) during Mika's work on the free ep93xx
+audio driver for 2.6.37.  Unfortunately it does NOT sort out the data errors
+that we are getting when using USB DMA with the RAM in 32-bit mode.
 
    Martin Guy, 4 Nov 2010
 
