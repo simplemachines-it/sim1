@@ -1,0 +1,19 @@
+Fix a bug that prevents us from enabling ll 3 of USB, AC97 audio and
+frame buffer at 1024x768 at the same time due to overzealous allocation
+of DMA memory.
+
+http://lists.arm.linux.org.uk/lurker/message/20101031.223036.c30bf813.en.html
+
+Index: linux-2.6.36/arch/arm/mm/dma-mapping.c
+===================================================================
+--- linux-2.6.36.orig/arch/arm/mm/dma-mapping.c	2010-11-18 19:32:00.709796582 +0100
++++ linux-2.6.36/arch/arm/mm/dma-mapping.c	2010-11-18 19:32:18.690404011 +0100
+@@ -198,7 +198,7 @@
+ 	 * fragmentation of the DMA space, and also prevents allocations
+ 	 * smaller than a section from crossing a section boundary.
+ 	 */
+-	bit = fls(size - 1) + 1;
++	bit = fls(size - 1);
+ 	if (bit > SECTION_SHIFT)
+ 		bit = SECTION_SHIFT;
+ 	align = 1 << bit;

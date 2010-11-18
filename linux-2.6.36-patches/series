@@ -1,0 +1,10 @@
+simone-add-mmc_spi.patch
+ep93xx-cpuinfo.patch
+ep93xx-touchscreen.patch
+mmc_spi-fix-SDHC.patch
+0001-ASoC-add-ep93xx-AC97-audio-driver.patch
+0002-ARM-ep93xx-add-AC97-platform-support.patch
+0003-ASoC-ep93xx-add-Simplemachines-Sim.One-AC97-audio.patch
+arm-fix-dma-mapping.patch
+simone_defconfig.patch
+simone-set-video-modes.patch
