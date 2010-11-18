@@ -3,3 +3,4 @@ ep93xx-cpuinfo.patch
 ep93xx-touchscreen.patch
 simone_defconfig.patch
 ep93xx-dma-fix.patch
+mmc_spi-fix-SDHC.patch

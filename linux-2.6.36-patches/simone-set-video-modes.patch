@@ -1,0 +1,68 @@
+Instead of reserving video memory for 1024x768x16bits (1572864 bytes) this
+allows up to 800x600x16bits, thereby saving half a meg of RAM.
+In any case, 1024x768 only works without twitching at 8bpp.
+
+Index: linux-2.6.36-simone/arch/arm/mach-ep93xx/simone.c
+===================================================================
+--- linux-2.6.36-simone.orig/arch/arm/mach-ep93xx/simone.c	2010-11-17 19:56:42.023092147 +0100
++++ linux-2.6.36-simone/arch/arm/mach-ep93xx/simone.c	2010-11-17 19:56:47.772072164 +0100
+@@ -18,6 +18,7 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
++#include <linux/fb.h>
+ #include <linux/mmc/host.h>
+ #include <linux/gpio.h>
+ #include <linux/spi/spi.h>
+@@ -36,8 +37,50 @@
+ 	.phy_id		= 1,
+ };
+ 
++/*
++ * FB support
++ * Standard modes copied from drivers/video/modedb.c
++ * Including 1024x768, which only works without twitching at 8bpp,
++ * exceeds the amount of available DMA memory when both USB-OHCI and AC97
++ * are enabled, so we go for 800x600 max.
++ */
++static const struct fb_videomode fb_modedb[] = {
++	{	/* 640x480 @ 60 Hz, 31.5 kHz hsync */
++		.name		= "CRT-VGA",
++		.refresh	= 60,
++		.xres		= 640,
++		.yres		= 480,
++		.pixclock	= 39721,
++		.left_margin	= 40,
++		.right_margin	= 24,
++		.upper_margin	= 32,
++		.lower_margin	= 11,
++		.hsync_len	= 96,
++		.vsync_len	= 2,
++		.sync		= 0,
++		.vmode		= FB_VMODE_NONINTERLACED,
++		.flag		= 0,
++	}, {/* 800x600 @ 60 Hz, 37.8 kHz hsync */
++		.name		= "CRT-SVGA",
++		.refresh	= 60,
++		.xres		= 800,
++		.yres		= 600,
++		.pixclock	= 25000,
++		.left_margin	= 888,
++		.right_margin	= 40,
++		.upper_margin	= 23,
++		.lower_margin	= 1,
++		.hsync_len	= 128,
++		.vsync_len	= 4,
++		.sync		= FB_SYNC_HOR_HIGH_ACT|FB_SYNC_VERT_HIGH_ACT,
++		.vmode		= FB_VMODE_NONINTERLACED,
++		.flag		= 0,
++	},
++};
++
+ static struct ep93xxfb_mach_info __initdata simone_fb_info = {
+-	.num_modes	= EP93XXFB_USE_MODEDB,
++	.modes		= fb_modedb,
++	.num_modes	= ARRAY_SIZE(fb_modedb),
+ 	.bpp		= 16,
+ 	.flags		= EP93XXFB_USE_SDCSN0 | EP93XXFB_PCLK_FALLING,
+ };
