@@ -1,4 +1,4 @@
-update=28/11/2010 10:14:18
+update=05/12/2010 17:15:49
 version=1
 last_client=eeschema
 [cvpcb]
@@ -117,3 +117,4 @@ ShowSheetReferenceAndTitleBlock=1
 [eeschema/libraries]
 LibName1=simone
 LibName2=power
+LibName3=conn
